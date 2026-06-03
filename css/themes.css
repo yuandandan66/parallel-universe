@@ -395,7 +395,53 @@
   opacity: 0.7;
 }
 
-/* 潜台词揭示区（付费解锁后显示） */
+/* ========================================
+   裂变入口区 - 游戏二维码
+   ======================================== */
+.poster-entry-zone {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 24px 16px;
+  gap: 12px;
+}
+
+.poster-qrcode-wrap {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 10px;
+  padding: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.poster-qrcode-canvas {
+  display: block;
+  border-radius: 4px;
+}
+
+.poster-qrcode-label {
+  font-size: 9px;
+  color: #333;
+  margin-top: 5px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* 真实版下的二维码区域 */
+.theme-real .poster-qrcode-wrap {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 0, 85, 0.3);
+}
+
+.theme-real .poster-qrcode-label {
+  color: #ff0055;
+}
+
+/* ========================================
+   潜台词揭示区（付费解锁后显示）
+   ======================================== */
 .poster-subtext-reveal {
   position: relative;
   z-index: 2;
