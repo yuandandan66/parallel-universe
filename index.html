@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>打工人的平行宇宙</title>
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/themes.css">
+<link rel="stylesheet" href="css/poster.css">
+</head>
+<body>
+<!-- 游戏容器 -->
+<div id="game-container">
+
+  <!-- 开场画面 -->
+  <div id="screen-splash" class="screen active">
+    <div class="splash-content">
+      <div class="splash-logo">
+        <div class="logo-icon">🌌</div>
+        <h1 class="game-title">
+          <span class="title-line1">打工人的</span>
+          <span class="title-line2">平行宇宙</span>
+        </h1>
+      </div>
+      <p class="splash-subtitle">人生选择模拟器 · 薛定谔的朋友圈</p>
+      <div class="splash-desc">
+        <p>你是一名刚入职的"社畜"</p>
+        <p>每个选择，都会导向不同的平行宇宙</p>
+        <p>但别担心——你永远有<em>两张面具</em></p>
+      </div>
+      <button class="btn btn-primary btn-start" onclick="game.start()">
+        <span>进入平行宇宙</span>
+        <span class="btn-arrow">→</span>
+      </button>
+    </div>
+    <div class="splash-stars" id="splash-stars"></div>
+  </div>
+
+  <!-- 角色创建画面 -->
+  <div id="screen-create" class="screen">
+    <div class="screen-header">
+      <div class="header-back" onclick="game.goToSplash()">← 返回</div>
+      <div class="header-title">创建你的打工人身份</div>
+    </div>
+    <div class="create-content">
+      <div class="avatar-picker" id="avatar-picker">
+        <div class="avatar-option" data-avatar="👨‍💻" onclick="game.selectAvatar(this)">
+          <span class="avatar-emoji">👨‍💻</span>
+          <span class="avatar-label">程序猿</span>
+        </div>
+        <div class="avatar-option" data-avatar="👩‍💻" onclick="game.selectAvatar(this)">
+          <span class="avatar-emoji">👩‍💻</span>
+          <span class="avatar-label">程序媛</span>
+        </div>
+        <div class="avatar-option" data-avatar="👨‍🎨" onclick="game.selectAvatar(this)">
+          <span class="avatar-emoji">👨‍🎨</span>
+          <span class="avatar-label">设计师</span>
+        </div>
+        <div class="avatar-option" data-avatar="👩‍💼" onclick="game.selectAvatar(this)">
+          <span class="avatar-emoji">👩‍💼</span>
+          <span class="avatar-label">运营</span>
+        </div>
+        <div class="avatar-option" data-avatar="👨‍🔧" onclick="game.selectAvatar(this)">
+          <span class="avatar-emoji">👨‍🔧</span>
+          <span class="avatar-label">产品经理</span>
+        </div>
+        <div class="avatar-option" data-avatar="👩‍🔬" onclick="game.selectAvatar(this)">
+          <span class="avatar-emoji">👩‍🔬</span>
+          <span class="avatar-label">数据分析</span>
+        </div>
+      </div>
+      <div class="name-input-wrap">
+        <label>你的花名（选填）</label>
+        <input type="text" id="input-nickname" placeholder="如：不想上班的张三" maxlength="12">
+      </div>
+      <button class="btn btn-primary btn-start-game" id="btn-start-game" onclick="game.startGame()" disabled>
+        开始打工人生
+      </button>
+    </div>
+  </div>
+
+  <!-- 游戏主画面 -->
+  <div id="screen-game" class="screen">
+    <!-- 顶部状态栏 -->
+    <div class="game-status-bar">
+      <div class="status-item">
+        <span class="status-icon">⚡</span>
+        <span class="status-label">精力</span>
+        <div class="status-bar-wrap"><div class="status-bar-fill energy-bar" id="bar-energy"></div></div>
+        <span class="status-value" id="val-energy">100</span>
+      </div>
+      <div class="status-item">
+        <span class="status-icon">😤</span>
+        <span class="status-label">怨气</span>
+        <div class="status-bar-wrap"><div class="status-bar-fill anger-bar" id="bar-anger"></div></div>
+        <span class="status-value" id="val-anger">0</span>
+      </div>
+      <div class="status-item">
+        <span class="status-icon">💰</span>
+        <span class="status-label">余额</span>
+        <span class="status-value" id="val-money">5000</span>
+      </div>
+      <div class="status-item">
+        <span class="status-icon">📅</span>
+        <span class="status-label">第</span>
+        <span class="status-value" id="val-day">1</span>
+        <span class="status-label">天</span>
+      </div>
+    </div>
+
+    <!-- 人设标签 -->
+    <div class="persona-tags" id="persona-tags">
+      <span class="tag tag-default">职场萌新</span>
+    </div>
+
+    <!-- 事件卡片区域 -->
+    <div class="event-area" id="event-area">
+      <div class="event-card" id="event-card">
+        <div class="event-time" id="event-time"></div>
+        <div class="event-scene-emoji" id="event-scene-emoji"></div>
+        <div class="event-title" id="event-title"></div>
+        <div class="event-desc" id="event-desc"></div>
+        <div class="event-choices" id="event-choices"></div>
+        <!-- 潜台词解锁提示 -->
+        <div class="choice-subtext-hint" id="subtext-hint" onclick="game.showPaywall('event')" style="display:none;">
+          <span class="hint-lock">🔒</span> 解锁查看每个选项的真实潜台词
+          <span style="font-size:10px;opacity:0.6;">（¥1.00）</span>
+        </div>
+        <!-- 潜台词揭示区 -->
+        <div id="subtext-reveal-area"></div>
+      </div>
+    </div>
+
+    <!-- 打字机日志 -->
+    <div class="game-log" id="game-log">
+      <div class="log-entry">📋 第一天上班，你惴惴不安地走进公司大门……</div>
+    </div>
+  </div>
+
+  <!-- 结局画面 -->
+  <div id="screen-ending" class="screen">
+    <div class="ending-content">
+      <div class="ending-emoji" id="ending-emoji"></div>
+      <h2 class="ending-title" id="ending-title-text"></h2>
+      <p class="ending-desc" id="ending-desc-text"></p>
+      <div class="ending-stats" id="ending-stats"></div>
+      <p class="ending-flavor" id="ending-flavor"></p>
+      
+      <div class="share-section">
+        <p class="share-prompt">🎭 选择你的社交面具</p>
+        <p class="share-hint">同一个结局，两种人生——发给不同的人看不同的版本</p>
+        
+        <div class="share-buttons">
+          <button class="btn btn-share btn-share-boss" onclick="game.generatePoster('boss')">
+            <span class="share-btn-icon">💼</span>
+            <div class="share-btn-text">
+              <strong>老板/同事可见</strong>
+              <small>正能量·凡尔赛·卷王人设</small>
+            </div>
+          </button>
+          <button class="btn btn-share btn-share-real" onclick="game.generatePoster('real')">
+            <span class="share-btn-icon">🤬</span>
+            <div class="share-btn-text">
+              <strong>死党/亲友可见</strong>
+              <small>发疯文学·人间清醒·真话版</small>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-replay" onclick="game.replay()">
+        🔄 进入另一个平行宇宙
+      </button>
+    </div>
+  </div>
+
+  <!-- 海报预览弹窗 -->
+  <div id="modal-poster" class="modal">
+    <div class="modal-overlay" onclick="game.closePoster()"></div>
+    <div class="modal-content poster-modal-content">
+      <div class="poster-header">
+        <span class="poster-badge" id="poster-badge"></span>
+        <button class="btn-close" onclick="game.closePoster()">✕</button>
+      </div>
+      <div class="poster-card" id="poster-card">
+        <div class="poster-inner" id="poster-inner">
+          <!-- 动态生成的海报内容 -->
+        </div>
+      </div>
+      <div class="poster-actions">
+        <button class="btn btn-save" onclick="game.savePoster()">💾 保存海报</button>
+        <button class="btn btn-unlock-subtext" id="btn-unlock-poster-subtext" onclick="game.showPaywall('poster')">
+          🔓 解锁潜台词（¥1.00）
+        </button>
+      </div>
+      <div class="poster-actions" style="margin-top:0;">
+        <button class="btn btn-share-wx" onclick="game.sharePoster()">💬 分享到朋友圈</button>
+      </div>
+      <p class="poster-tip" id="poster-tip"></p>
+    </div>
+  </div>
+
+  <!-- 付费弹窗 -->
+  <div id="modal-paywall">
+    <div class="paywall-overlay" onclick="game.closePaywall()"></div>
+    <div class="paywall-content" id="paywall-content">
+      <div class="paywall-icon">🔮</div>
+      <h3 class="paywall-title">解锁「真心话药水」</h3>
+      <p class="paywall-desc">揭开职场面具，看到每个人每句话背后的<strong>真实潜台词</strong></p>
+      <div class="paywall-features">
+        <div class="paywall-feature">
+          <span class="pf-icon">💬</span> 解锁所有选项的真实OS
+        </div>
+        <div class="paywall-feature">
+          <span class="pf-icon">🎭</span> 海报显示隐藏潜台词
+        </div>
+        <div class="paywall-feature">
+          <span class="pf-icon">🔄</span> 永久有效，所有结局通用
+        </div>
+      </div>
+      <div class="paywall-price">
+        <span class="price-original">¥9.99</span>
+        <span class="price-current">¥1</span>
+        <span class="price-unit">.00</span>
+      </div>
+      <div class="paywall-btn-row">
+        <button class="btn-pay" onclick="game.doUnlock()">
+          💎 立即解锁
+        </button>
+        <button class="btn-pay-later" onclick="game.closePaywall()">
+          下次再说
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast提示 -->
+  <div id="toast" class="toast"></div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/game.js"></script>
+<script src="js/poster.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
