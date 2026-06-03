@@ -125,7 +125,6 @@
         <!-- 潜台词解锁提示 -->
         <div class="choice-subtext-hint" id="subtext-hint" onclick="game.showPaywall('event')" style="display:none;">
           <span class="hint-lock">🔒</span> 解锁查看每个选项的真实潜台词
-          <span style="font-size:10px;opacity:0.6;">（¥1.00）</span>
         </div>
         <!-- 潜台词揭示区 -->
         <div id="subtext-reveal-area"></div>
@@ -195,14 +194,14 @@
       <div class="poster-actions">
         <button class="btn btn-save" onclick="game.savePoster()">💾 保存海报</button>
         <button class="btn btn-unlock-subtext" id="btn-unlock-poster-subtext" onclick="game.showPaywall('poster')">
-          🔓 解锁潜台词（¥1.00）
+          🔓 解锁潜台词
         </button>
       </div>
       <p class="poster-tip" id="poster-tip"></p>
     </div>
   </div>
 
-  <!-- 付费弹窗：微信扫码支付 -->
+  <!-- 潜台词解锁弹窗 -->
   <div id="modal-paywall">
     <div class="paywall-overlay" onclick="game.closePaywall()"></div>
     <div class="paywall-content" id="paywall-content">
@@ -220,19 +219,9 @@
           <span class="pf-icon">🔄</span> 永久有效，所有结局通用
         </div>
       </div>
-      <div class="paywall-price">
-        <span class="price-amount">¥1.00</span>
-      </div>
-      <div class="qrcode-wrap">
-        <img src="qrcode.jpg" alt="微信扫码支付" class="qrcode-img">
-        <div class="qrcode-scan-hint">
-          <span class="scan-pulse">📱</span> 微信扫码支付
-        </div>
-      </div>
-      <p class="paywall-notice">支付完成后请点击下方按钮手动解锁</p>
       <div class="paywall-btn-row">
         <button class="btn-pay" onclick="game.doUnlock()">
-          ✅ 我已完成支付，立即解锁
+          🔮 立即解锁
         </button>
         <button class="btn-pay-later" onclick="game.closePaywall()">
           下次再说
