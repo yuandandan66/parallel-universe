@@ -1,0 +1,526 @@
+/* === 重制版海报主题：电影级视觉冲击 === */
+
+/* ========================================
+   老板版 - 商务奢华金蓝风
+   ======================================== */
+.poster-inner.theme-boss {
+  background: linear-gradient(160deg, #0a1628 0%, #0d1f3c 30%, #0a2647 60%, #06121e 100%);
+  color: #e8edf5;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 老板版 - 金色光线装饰 */
+.poster-inner.theme-boss::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -30%;
+  width: 80%;
+  height: 200%;
+  background: radial-gradient(ellipse at center, rgba(249, 202, 36, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.poster-inner.theme-boss::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(249, 202, 36, 0.3), transparent);
+  pointer-events: none;
+}
+
+/* 老板版 - 顶部金线 */
+.poster-inner.theme-boss .poster-top-line {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c9a84c, #f9ca24, #c9a84c, transparent);
+}
+
+/* 老板版 - 几何装饰网格 */
+.poster-inner.theme-boss .poster-geo-bg {
+  position: absolute;
+  inset: 0;
+  opacity: 0.04;
+  background-image: 
+    linear-gradient(rgba(249, 202, 36, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(249, 202, 36, 0.3) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* ========================================
+   真实版 - 霓虹故障朋克风
+   ======================================== */
+.poster-inner.theme-real {
+  background: #0a0a0a;
+  color: #f0f0f0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 真实版 - 故障条纹背景 */
+.poster-inner.theme-real::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 0, 85, 0.03) 2px,
+    rgba(255, 0, 85, 0.03) 4px
+  );
+  pointer-events: none;
+}
+
+/* 真实版 - 对角线斜切装饰 */
+.poster-inner.theme-real .poster-slash-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.poster-inner.theme-real .poster-slash-bg .slash {
+  position: absolute;
+  background: linear-gradient(90deg, transparent, rgba(255, 0, 85, 0.06), transparent);
+  transform: skewY(-15deg);
+}
+
+.poster-inner.theme-real .poster-slash-bg .slash.s1 {
+  top: 20%; left: -20%; width: 140%; height: 3px;
+}
+
+.poster-inner.theme-real .poster-slash-bg .slash.s2 {
+  top: 50%; left: -20%; width: 140%; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.08), transparent);
+}
+
+.poster-inner.theme-real .poster-slash-bg .slash.s3 {
+  top: 75%; left: -20%; width: 140%; height: 4px;
+}
+
+/* 真实版 - 噪点纹理 */
+.poster-inner.theme-real .poster-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* ========================================
+   共享海报组件样式（大幅强化）
+   ======================================== */
+
+.poster-inner {
+  aspect-ratio: 3/4;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 海报头部大标题区域 */
+.poster-hero {
+  position: relative;
+  z-index: 2;
+  padding: 28px 24px 16px;
+  text-align: center;
+}
+
+/* 版本标签 - 强化 */
+.poster-version-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.theme-boss .poster-version-badge {
+  background: rgba(249, 202, 36, 0.12);
+  border: 1px solid rgba(249, 202, 36, 0.3);
+  color: #c9a84c;
+}
+
+.theme-real .poster-version-badge {
+  background: rgba(255, 0, 85, 0.12);
+  border: 1px solid rgba(255, 0, 85, 0.4);
+  color: #ff3366;
+  animation: badgeGlitch 4s infinite;
+}
+
+@keyframes badgeGlitch {
+  0%, 93%, 100% { opacity: 1; transform: none; }
+  94% { opacity: 0.6; transform: translateX(-2px); }
+  96% { opacity: 0.8; transform: translateX(2px); }
+}
+
+/* 结局大标题 - 巨大冲击力 */
+.poster-ending-headline {
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 2px;
+}
+
+.theme-boss .poster-ending-headline {
+  background: linear-gradient(180deg, #f9ca24 0%, #c9973a 40%, #f9ca24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 2px 8px rgba(249, 202, 36, 0.2));
+}
+
+.theme-real .poster-ending-headline {
+  color: #fff;
+  text-shadow: 
+    3px 0 #ff0055,
+    -3px 0 #00ffff,
+    0 0 20px rgba(255, 0, 85, 0.5);
+  animation: headlineShake 6s infinite;
+}
+
+@keyframes headlineShake {
+  0%, 100% { transform: none; }
+  2% { transform: translate(2px, -1px); }
+  4% { transform: translate(-2px, 1px); }
+  6% { transform: none; }
+}
+
+/* 分隔线强化 */
+.poster-divider-heavy {
+  width: 80px;
+  height: 4px;
+  margin: 14px auto;
+  border-radius: 2px;
+}
+
+.theme-boss .poster-divider-heavy {
+  background: linear-gradient(90deg, transparent, #f9ca24, #c9973a, #f9ca24, transparent);
+}
+
+.theme-real .poster-divider-heavy {
+  background: linear-gradient(90deg, transparent, #ff0055, #ff3366, #ff0055, transparent);
+  animation: dividerPulse 2s ease-in-out infinite;
+}
+
+@keyframes dividerPulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* 副标题 */
+.poster-subtitle {
+  font-size: 13px;
+  opacity: 0.6;
+  letter-spacing: 4px;
+  margin-top: 4px;
+}
+
+/* 场景视觉区 - 海报核心画面 */
+.poster-visual {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  padding: 8px 24px;
+  min-height: 140px;
+}
+
+.poster-visual-emoji {
+  font-size: 100px;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.4));
+  transition: transform 0.3s;
+}
+
+.theme-boss .poster-visual-emoji {
+  filter: drop-shadow(0 8px 30px rgba(249, 202, 36, 0.25));
+}
+
+.theme-real .poster-visual-emoji {
+  filter: drop-shadow(0 0 20px rgba(255, 0, 85, 0.4)) drop-shadow(0 0 40px rgba(255, 0, 85, 0.2));
+  animation: visualGlitch 5s infinite;
+}
+
+@keyframes visualGlitch {
+  0%, 90%, 100% { transform: none; filter: drop-shadow(0 0 20px rgba(255, 0, 85, 0.4)); }
+  91% { transform: translate(3px, 0) skew(2deg); filter: drop-shadow(3px 0 #ff0055) drop-shadow(-3px 0 #00ffff); }
+  93% { transform: translate(-3px, 0) skew(-2deg); }
+  95% { transform: none; }
+}
+
+/* 视觉区光晕环 */
+.poster-visual-ring {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.theme-boss .poster-visual-ring {
+  border: 2px solid rgba(249, 202, 36, 0.15);
+  box-shadow: 0 0 60px rgba(249, 202, 36, 0.08), inset 0 0 60px rgba(249, 202, 36, 0.05);
+}
+
+.theme-real .poster-visual-ring {
+  border: 2px dashed rgba(255, 0, 85, 0.2);
+  animation: ringRotate 20s linear infinite;
+  box-shadow: 0 0 40px rgba(255, 0, 85, 0.1);
+}
+
+@keyframes ringRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 核心文案区 - 海报的"金句" */
+.poster-quote-area {
+  position: relative;
+  z-index: 2;
+  padding: 0 24px 16px;
+  text-align: center;
+}
+
+.poster-big-quote {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.8;
+  position: relative;
+  display: inline-block;
+}
+
+/* 大引号装饰 */
+.poster-big-quote::before {
+  content: '"';
+  position: absolute;
+  top: -20px;
+  left: -16px;
+  font-size: 48px;
+  opacity: 0.15;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.theme-boss .poster-big-quote {
+  color: #d4c5a0;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
+.theme-real .poster-big-quote {
+  color: #ffcccc;
+  background: rgba(255, 0, 85, 0.06);
+  padding: 12px 16px;
+  border-radius: 4px;
+  border-left: 3px solid rgba(255, 0, 85, 0.5);
+  font-style: italic;
+}
+
+/* 标签区 */
+.poster-tags-area {
+  position: relative;
+  z-index: 2;
+  padding: 0 24px 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.poster-tag-item {
+  font-size: 11px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.theme-boss .poster-tag-item {
+  background: rgba(249, 202, 36, 0.08);
+  border: 1px solid rgba(249, 202, 36, 0.2);
+  color: #b8942e;
+}
+
+.theme-real .poster-tag-item {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #999;
+}
+
+/* 底部水印区 */
+.poster-bottom-bar {
+  position: relative;
+  z-index: 2;
+  padding: 12px 24px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+}
+
+.theme-boss .poster-bottom-bar {
+  color: rgba(249, 202, 36, 0.4);
+  border-top: 1px solid rgba(249, 202, 36, 0.08);
+}
+
+.theme-real .poster-bottom-bar {
+  color: rgba(255, 255, 255, 0.25);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.poster-game-logo {
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.poster-player-name {
+  opacity: 0.7;
+}
+
+/* 潜台词揭示区（付费解锁后显示） */
+.poster-subtext-reveal {
+  position: relative;
+  z-index: 2;
+  margin: 8px 24px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  animation: subtextReveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes subtextReveal {
+  from { opacity: 0; transform: scale(0.8) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.theme-boss .poster-subtext-reveal {
+  background: rgba(249, 202, 36, 0.1);
+  border: 1px solid rgba(249, 202, 36, 0.3);
+  color: #c9a84c;
+}
+
+.theme-real .poster-subtext-reveal {
+  background: rgba(255, 0, 85, 0.1);
+  border: 1px solid rgba(255, 0, 85, 0.3);
+  color: #ff6b8a;
+}
+
+.poster-subtext-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  opacity: 0.6;
+  margin-bottom: 4px;
+}
+
+/* 海报弹窗样式更新 */
+.poster-modal-content {
+  padding: 12px;
+  background: #0a0a14;
+}
+
+.poster-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.poster-badge {
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+}
+
+.badge-boss {
+  background: linear-gradient(135deg, rgba(249, 202, 36, 0.2), rgba(201, 151, 58, 0.1));
+  border: 1px solid rgba(249, 202, 36, 0.3);
+  color: #c9a84c;
+}
+
+.badge-real {
+  background: linear-gradient(135deg, rgba(255, 0, 85, 0.2), rgba(255, 51, 102, 0.1));
+  border: 1px solid rgba(255, 0, 85, 0.3);
+  color: #ff3366;
+}
+
+.poster-card {
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+
+/* 保存和分享按钮 */
+.poster-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.btn-save, .btn-share-wx, .btn-unlock-subtext {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-save {
+  background: rgba(255,255,255,0.08);
+  color: #ccc;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.btn-share-wx {
+  background: #07C160;
+  color: white;
+}
+
+.btn-unlock-subtext {
+  background: linear-gradient(135deg, #f9ca24, #c9973a);
+  color: #1a1a2e;
+  font-weight: 700;
+  animation: unlockPulse 2s ease-in-out infinite;
+}
+
+@keyframes unlockPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(249, 202, 36, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(249, 202, 36, 0); }
+}
+
+.btn-save:active, .btn-share-wx:active, .btn-unlock-subtext:active {
+  transform: scale(0.95);
+}
+
+.poster-tip {
+  font-size: 11px;
+  color: #666;
+  text-align: center;
+  line-height: 1.6;
+}
