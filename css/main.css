@@ -781,6 +781,262 @@ body {
   to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
+/* === 付费弹窗 === */
+#modal-paywall {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+#modal-paywall.active {
+  display: flex;
+}
+
+.paywall-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(10px);
+}
+
+.paywall-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 340px;
+  background: linear-gradient(145deg, #1a1a2e, #16213e);
+  border-radius: 20px;
+  padding: 28px 24px 24px;
+  text-align: center;
+  border: 1px solid rgba(108, 92, 231, 0.3);
+  box-shadow: 0 20px 60px rgba(108, 92, 231, 0.2);
+  animation: modalIn 0.35s ease;
+}
+
+.paywall-content.paywall-success {
+  border-color: #07C160;
+  box-shadow: 0 0 40px rgba(7, 193, 96, 0.3);
+}
+
+.paywall-icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+  animation: float 2s ease-in-out infinite;
+}
+
+.paywall-title {
+  font-size: 22px;
+  font-weight: 900;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #a78bfa, #f9a8d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.paywall-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.paywall-desc strong {
+  color: var(--gold);
+}
+
+.paywall-features {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+  text-align: left;
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.paywall-feature {
+  font-size: 13px;
+  color: #c0c0d0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pf-icon {
+  font-size: 16px;
+  width: 24px;
+  text-align: center;
+}
+
+.paywall-price {
+  margin-bottom: 18px;
+}
+
+.price-amount {
+  font-size: 36px;
+  font-weight: 900;
+  color: #f9a8d4;
+  text-shadow: 0 0 20px rgba(249, 168, 212, 0.4);
+}
+
+/* 收款码区域 */
+.qrcode-wrap {
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.qrcode-img {
+  width: 180px;
+  height: 180px;
+  border-radius: 16px;
+  border: 3px solid rgba(255,255,255,0.15);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  background: white;
+  object-fit: contain;
+}
+
+.qrcode-scan-hint {
+  font-size: 14px;
+  font-weight: 700;
+  color: #07C160;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.scan-pulse {
+  font-size: 20px;
+  animation: scanPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes scanPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.15); }
+}
+
+.paywall-notice {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+}
+
+.paywall-btn-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn-pay {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  background: linear-gradient(135deg, #07C160, #06AD56);
+  color: white;
+  box-shadow: 0 4px 16px rgba(7, 193, 96, 0.3);
+  transition: var(--transition);
+}
+
+.btn-pay:hover {
+  box-shadow: 0 6px 24px rgba(7, 193, 96, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-pay:active {
+  transform: scale(0.96);
+}
+
+.btn-pay-later {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 14px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-dim);
+  transition: var(--transition);
+}
+
+.btn-pay-later:hover {
+  color: white;
+}
+
+/* === 潜台词解锁按钮 === */
+.choice-subtext-hint {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 14px;
+  padding: 10px 16px;
+  background: rgba(249, 202, 36, 0.08);
+  border: 1px dashed rgba(249, 202, 36, 0.3);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--gold);
+  transition: var(--transition);
+}
+
+.choice-subtext-hint:hover {
+  background: rgba(249, 202, 36, 0.15);
+  border-color: rgba(249, 202, 36, 0.5);
+}
+
+.hint-lock { font-size: 16px; }
+
+.subtext-reveal {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: rgba(249, 202, 36, 0.06);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 10px 10px 0;
+  font-size: 13px;
+  color: #ddd;
+  line-height: 1.6;
+  animation: fadeIn 0.4s ease;
+}
+
+.subtext-label {
+  display: block;
+  font-size: 11px;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.btn-unlock-subtext {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid var(--gold);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  background: transparent;
+  color: var(--gold);
+  transition: var(--transition);
+}
+
+.btn-unlock-subtext:hover {
+  background: rgba(249, 202, 36, 0.1);
+}
+
 /* === 响应式 === */
 @media (max-width: 380px) {
   .game-title { font-size: 30px; }
