@@ -1,0 +1,226 @@
+/* === 海报弹窗和潜台词付费弹窗样式 === */
+
+/* 付费弹窗 */
+#modal-paywall {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+#modal-paywall.active {
+  display: flex;
+}
+
+.paywall-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(12px);
+}
+
+.paywall-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 340px;
+  background: linear-gradient(160deg, #1a1a2e, #16213e, #0f3460);
+  border-radius: 20px;
+  padding: 32px 24px;
+  text-align: center;
+  border: 1px solid rgba(249, 202, 36, 0.2);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  animation: paywallIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes paywallIn {
+  from { opacity: 0; transform: scale(0.8) translateY(30px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.paywall-icon {
+  font-size: 56px;
+  margin-bottom: 16px;
+  animation: paywallIconFloat 2s ease-in-out infinite;
+}
+
+@keyframes paywallIconFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.paywall-title {
+  font-size: 22px;
+  font-weight: 900;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #f9ca24, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.paywall-desc {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.paywall-features {
+  text-align: left;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.paywall-feature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.paywall-feature .pf-icon {
+  font-size: 20px;
+}
+
+.paywall-price {
+  margin-bottom: 20px;
+}
+
+.paywall-price .price-original {
+  font-size: 14px;
+  color: #666;
+  text-decoration: line-through;
+  margin-right: 8px;
+}
+
+.paywall-price .price-current {
+  font-size: 36px;
+  font-weight: 900;
+  color: #f9ca24;
+}
+
+.paywall-price .price-unit {
+  font-size: 14px;
+  color: #999;
+}
+
+.paywall-btn-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-pay {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #f9ca24, #e5a910);
+  color: #1a1a2e;
+  border: none;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(249, 202, 36, 0.3);
+}
+
+.btn-pay:hover {
+  box-shadow: 0 6px 30px rgba(249, 202, 36, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-pay:active {
+  transform: scale(0.96);
+}
+
+.btn-pay-later {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.btn-pay-later:hover {
+  color: #999;
+}
+
+/* 支付成功动画 */
+.paywall-success {
+  animation: successFlash 0.5s ease;
+}
+
+@keyframes successFlash {
+  0% { background: rgba(249, 202, 36, 0.2); }
+  100% { background: transparent; }
+}
+
+/* 游戏内事件选择界面的潜台词按钮 */
+.choice-subtext-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 8px;
+  font-size: 11px;
+  color: #888;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.choice-subtext-hint:hover {
+  color: #f9ca24;
+  background: rgba(249, 202, 36, 0.05);
+}
+
+.choice-subtext-hint .hint-lock {
+  font-size: 14px;
+}
+
+/* 潜台词揭示动画（在选择按钮下方） */
+.subtext-reveal {
+  margin-top: 8px;
+  padding: 10px 14px;
+  background: rgba(249, 202, 36, 0.08);
+  border: 1px solid rgba(249, 202, 36, 0.2);
+  border-radius: 8px;
+  font-size: 13px;
+  color: #e5c76b;
+  font-style: italic;
+  animation: subtextReveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: center;
+}
+
+@keyframes subtextReveal {
+  from { opacity: 0; transform: scale(0.9) translateY(-8px); max-height: 0; }
+  to { opacity: 1; transform: scale(1) translateY(0); max-height: 100px; }
+}
+
+.subtext-reveal .subtext-label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #b8942e;
+  margin-bottom: 4px;
+  font-style: normal;
+}
+
+/* 选项按钮被选中且有潜台词时高亮 */
+.choice-btn.has-subtext-unlocked {
+  border-color: rgba(249, 202, 36, 0.4);
+  background: rgba(249, 202, 36, 0.06);
+}
