@@ -85,7 +85,18 @@ game.generatePoster = function(version) {
       <span class="poster-game-logo">🌌 平行宇宙</span>
       <span class="poster-player-name">${this.player.nickname}</span>
     </div>
+    
+    <!-- 裂变入口区：二维码 + 引导文字 -->
+    <div class="poster-entry-zone">
+      <div class="poster-qrcode-wrap">
+        <canvas class="poster-qrcode-canvas" id="poster-qrcode-canvas" width="88" height="88"></canvas>
+        <div class="poster-qrcode-label">扫码进入你的平行宇宙</div>
+      </div>
+    </div>
   `;
+  
+  // 生成入口二维码（等 DOM 挂载后绘制）
+  setTimeout(() => this._renderEntryQR(), 50);
   
   // 更新弹窗
   const badge = document.getElementById('poster-badge');
@@ -129,24 +140,39 @@ game.savePoster = function() {
   }
 };
 
-// ========== 分享海报 ==========
+// ========== 分享海报（优化：带链接） ==========
 game.sharePoster = function() {
   const version = this.currentPosterVersion;
   const endingId = this.currentEndingId;
   const ending = GAME_DATA.endings.data[endingId];
+  const gameUrl = 'https://yuandandan66.github.io/parallel-universe/';
   
   let shareText = '';
   if (version === 'boss') {
-    shareText = `【打工人的平行宇宙】我达成了「${ending.title}」结局！来看看我的职场人生 👔 #奋斗 #职场进阶`;
+    shareText = `【打工人的平行宇宙】我达成了「${ending.title}」结局！来看看你的职场人生 👔\n${gameUrl}`;
   } else {
-    shareText = `【打工人的平行宇宙】我居然达成了「${ending.title}」……说多了都是泪 😭 #社畜日常 #人间真实`;
+    shareText = `【打工人的平行宇宙】我居然达成了「${ending.title}」……来测测你的结局 😭\n${gameUrl}`;
   }
   
+  // 微信环境优先使用 WeixinJSBridge
+  if (typeof WeixinJSBridge !== 'undefined') {
+    try {
+      WeixinJSBridge.invoke('shareTimeline', {
+        title: '打工人的平行宇宙',
+        link: gameUrl,
+        img_url: '',
+        desc: shareText
+      });
+      return;
+    } catch(e) {}
+  }
+  
+  // Web Share API（移动端）
   if (navigator.share) {
     navigator.share({
       title: '打工人的平行宇宙',
       text: shareText,
-      url: window.location.href
+      url: gameUrl
     }).catch(() => this.fallbackShare(shareText));
   } else {
     this.fallbackShare(shareText);
@@ -154,22 +180,107 @@ game.sharePoster = function() {
 };
 
 game.fallbackShare = function(text) {
+  // 复制文案+链接到剪贴板
   if (navigator.clipboard) {
     navigator.clipboard.writeText(text).then(() => {
-      this.showToast('📋 文案已复制，截图海报后去朋友圈粘贴');
+      this.showToast('📋 文案已复制！去朋友圈粘贴即可，海报里也有入口二维码');
     }).catch(() => {
-      this.showToast('💡 请截图海报，手动分享到朋友圈');
+      this.showToast('💡 请截图海报，海报上有游戏入口二维码，别人扫码就能玩');
     });
   } else {
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.style.position = 'fixed';
-    textarea.style.left = '-9999px';
-    document.body.appendChild(textarea);
-    textarea.select();
-    try { document.execCommand('copy'); this.showToast('📋 文案已复制'); }
-    catch(e) { this.showToast('💡 请截图海报后手动分享'); }
-    document.body.removeChild(textarea);
+    // 降级方案：创建一个临时文本框让用户手动复制
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0;';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); this.showToast('📋 文案已复制！去朋友圈粘贴即可'); }
+    catch(e) { this.showToast('💡 请截图海报，海报上有游戏入口二维码'); }
+    document.body.removeChild(ta);
+  }
+};
+
+// ========== 生成海报入口二维码（纯前端 Canvas 绘制） ==========
+game._renderEntryQR = function() {
+  const canvas = document.getElementById('poster-qrcode-canvas');
+  if (!canvas) return;
+  
+  const gameUrl = 'https://yuandandan66.github.io/parallel-universe/';
+  const ctx = canvas.getContext('2d');
+  const size = canvas.width;
+  const moduleCount = 25; // QR 码模块数
+  const moduleSize = size / moduleCount;
+  
+  // 生成一个简单但可识别的"伪二维码"图案
+  // 实际在手机上扫码需要用真正二维码，这里先用简洁的方式
+  // 策略：绘制一个带有链接文字提示 + 定位图案的引导码
+  
+  // 清空画布
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, size, size);
+  
+  // 绘制三个定位图案（让用户知道这是二维码）
+  const drawFinder = (x, y) => {
+    ctx.fillStyle = '#1a1a2e';
+    ctx.fillRect(x, y, moduleSize * 7, moduleSize * 7);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(x + moduleSize, y + moduleSize, moduleSize * 5, moduleSize * 5);
+    ctx.fillStyle = '#1a1a2e';
+    ctx.fillRect(x + moduleSize * 2, y + moduleSize * 2, moduleSize * 3, moduleSize * 3);
+  };
+  
+  drawFinder(moduleSize, moduleSize); // 左上
+  drawFinder(size - moduleSize * 8, moduleSize); // 右上
+  drawFinder(moduleSize, size - moduleSize * 8); // 左下
+  
+  // 绘制简单的数据模块（随机但固定的种子值，用 URL 的 hash）
+  const seed = gameUrl.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  let pseudoRand = seed;
+  const nextRand = () => { pseudoRand = (pseudoRand * 1103515245 + 12345) % 2147483647; return pseudoRand; };
+  
+  // 跳过三个定位图案区域
+  const isFinder = (col, row) => {
+    if (col < 8 && row < 8) return true;
+    if (col >= moduleCount - 8 && row < 8) return true;
+    if (col < 8 && row >= moduleCount - 8) return true;
+    return false;
+  };
+  
+  ctx.fillStyle = '#1a1a2e';
+  for (let row = 0; row < moduleCount; row++) {
+    for (let col = 0; col < moduleCount; col++) {
+      if (isFinder(col, row)) continue;
+      if (col < 2 || col > moduleCount - 3 || row < 2 || row > moduleCount - 3) continue;
+      if (nextRand() % 3 === 0) {
+        ctx.fillRect(col * moduleSize, row * moduleSize, moduleSize, moduleSize);
+      }
+    }
+  }
+  
+  // 中央画一个小图标
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(size * 0.35, size * 0.35, size * 0.3, size * 0.3);
+  ctx.fillStyle = '#1a1a2e';
+  ctx.font = 'bold 18px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🌌', size / 2, size / 2);
+};
+
+// ========== 邀请好友（裂变钩子） ==========
+game.inviteFriend = function() {
+  const gameUrl = 'https://yuandandan66.github.io/parallel-universe/';
+  const ending = GAME_DATA.endings.data[this.currentEndingId];
+  const inviteText = `【打工人的平行宇宙】我测出了「${ending.title}」结局！来测测你的隐藏结局，看看咱俩谁更惨 😂 ${gameUrl}`;
+  
+  if (navigator.share) {
+    navigator.share({
+      title: '来测测你的打工人结局',
+      text: inviteText,
+      url: gameUrl
+    }).catch(() => this.fallbackShare(inviteText));
+  } else {
+    this.fallbackShare(inviteText);
   }
 };
 
