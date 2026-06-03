@@ -201,7 +201,7 @@
     </div>
   </div>
 
-  <!-- 付费弹窗 -->
+  <!-- 付费弹窗：微信扫码支付 -->
   <div id="modal-paywall">
     <div class="paywall-overlay" onclick="game.closePaywall()"></div>
     <div class="paywall-content" id="paywall-content">
@@ -220,13 +220,18 @@
         </div>
       </div>
       <div class="paywall-price">
-        <span class="price-original">¥9.99</span>
-        <span class="price-current">¥1</span>
-        <span class="price-unit">.00</span>
+        <span class="price-amount">¥1.00</span>
       </div>
+      <div class="qrcode-wrap">
+        <img src="qrcode.jpg" alt="微信扫码支付" class="qrcode-img">
+        <div class="qrcode-scan-hint">
+          <span class="scan-pulse">📱</span> 微信扫码支付
+        </div>
+      </div>
+      <p class="paywall-notice">支付完成后请点击下方按钮手动解锁</p>
       <div class="paywall-btn-row">
         <button class="btn-pay" onclick="game.doUnlock()">
-          💎 立即解锁
+          ✅ 我已完成支付，立即解锁
         </button>
         <button class="btn-pay-later" onclick="game.closePaywall()">
           下次再说
